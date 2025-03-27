@@ -1,7 +1,8 @@
 import { useState } from "react";
-import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import placeholder from "../assets/placeholder.png";
+import API from "../utils/axiosInstance";
+
 
 const Profile = () => {
   const { user, setUser } = useAuth();
@@ -30,7 +31,7 @@ const Profile = () => {
     }
 
     try {
-      const response = await axios.put("http://localhost:8000/api/profile/", data);
+      const response = await API.put("/profile/", data);
       setUser(response.data);
       setSuccess("Profile updated successfully!");
     } catch (error) {

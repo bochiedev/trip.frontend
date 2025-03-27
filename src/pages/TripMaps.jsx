@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
 import MapComponent from "../components/MapComponent";
 import { MapContainer } from "react-leaflet";
 import RefreshTripButton from "../components/RefreshTripButton"
+import API from "../utils/axiosInstance";
+
 
 const TripMaps = () => {
     const [trips, setTrips] = useState([]);
@@ -16,7 +17,7 @@ const TripMaps = () => {
         setError(null);
         try {
             const params = filterDate ? { day: filterDate } : {};
-            const response = await axios.get("http://localhost:8000/api/trip-history/", { params });
+            const response = await API.get("/trip-history/", { params });
             setTrips(response.data);
         } catch (err) {
             setError(`Failed to fetch trips. Please try again later. ${err.response?.data?.message || err.message}`);

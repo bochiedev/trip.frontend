@@ -1,7 +1,8 @@
 import { useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
 import AsyncSelect from "react-select/async";
+import API from "../utils/axiosInstance";
+
 
 const TripForm = ({ onTripCreated }) => {
     const [currentLocation, setCurrentLocation] = useState(null);
@@ -16,7 +17,11 @@ const TripForm = ({ onTripCreated }) => {
         }
 
         try {
-            const response = await axios.get("http://localhost:8000/api/locations/", {
+            // const response = await axios.get("http://localhost:8000/api/locations/", {
+            //     params: { q: inputValue },
+            // });
+
+            const response = await API.get("/locations/", {
                 params: { q: inputValue },
             });
             return response.data.map((location) => ({
@@ -46,7 +51,7 @@ const TripForm = ({ onTripCreated }) => {
         }
 
         try {
-            const response = await axios.post("http://localhost:8000/api/plan-trip/", {
+            const response = await API.post("/plan-trip/", {
                 current_location: {
                     name: currentLocation.label,
                     latitude: currentLocation.latitude,

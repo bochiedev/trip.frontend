@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -9,7 +12,7 @@ export const AuthProvider = ({ children }) => {
 
     const fetchUserProfile = useCallback(async () => {
         try {
-            const response = await axios.get("http://localhost:8000/api/profile/");
+            const response = await axios.get(`${BASE_URL}/profile/`);
             setUser(response.data);
         } catch (error) {
             logout();
@@ -26,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (driverNumber, password) => {
         try {
-            const response = await axios.post("http://localhost:8000/api/login/", {
+            const response = await axios.post(`${BASE_URL}/login/`, {
                 driver_number: driverNumber,
                 password,
             });
@@ -53,7 +56,7 @@ export const AuthProvider = ({ children }) => {
 
     const refreshAccessToken = useCallback(async () => {
         try {
-            const response = await axios.post("http://localhost:8000/api/token/refresh/", {
+            const response = await axios.post(`${BASE_URL}/token/refresh/`, {
                 refresh: refreshToken,
             });
             const { access } = response.data;

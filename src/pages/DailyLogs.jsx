@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import LogSheet from "../components/LogSheet";
+import API from "../utils/axiosInstance";
+
 
 const DailyLogs = () => {
     const [trips, setTrips] = useState([]);
@@ -14,7 +15,7 @@ const DailyLogs = () => {
             setError(null);
             try {
                 const params = filterDate ? { day: filterDate } : {};
-                const response = await axios.get("http://localhost:8000/api/trip-history/", { params });
+                const response = await API.get("/trip-history/", { params });
                 setTrips(response.data);
             } catch (err) {
                 setError(`Failed to fetch logs. Please try again later. ${err.response?.data?.message || err.message}`);

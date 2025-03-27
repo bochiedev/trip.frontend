@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import TripForm from "../components/TripForm";
 import MapComponent from "../components/MapComponent";
 import { MapContainer } from "react-leaflet";
 import RefreshTripButton from "../components/RefreshTripButton"
+import API from "../utils/axiosInstance";
+
 
 const Dashboard = () => {
     const [currentTrip, setCurrentTrip] = useState(null);
@@ -15,7 +16,7 @@ const Dashboard = () => {
             setLoading(true);
             setError(null);
             try {
-                const response = await axios.get("http://localhost:8000/api/trip-history/");
+                const response = await API.get("/trip-history/");
                 const trips = response.data;
                 if (trips.length > 0) {
                     setCurrentTrip(trips[0]);

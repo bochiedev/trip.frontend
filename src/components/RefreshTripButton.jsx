@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import { FiRefreshCcw } from "react-icons/fi";
 import { toast } from "react-toastify";
+import API from "../utils/axiosInstance";
 
 
 const RefreshTripButton = ({ tripData, onRefreshComplete }) => {
@@ -10,7 +10,9 @@ const RefreshTripButton = ({ tripData, onRefreshComplete }) => {
     const handleRefresh = async () => {
         setLoading(true);
         try {
-            const response = await axios.post("http://localhost:8000/api/create-route-data/", { trip_id: tripData.id });
+            // const response = await axios.post("http://localhost:8000/api/create-route-data/", { trip_id: tripData.id });
+            const response = await API.post("/create-route-data/", { trip_id: tripData.id });
+
 
 
             if (response.status === 200) {
