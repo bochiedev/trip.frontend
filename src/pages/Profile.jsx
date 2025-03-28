@@ -32,10 +32,14 @@ const Profile = () => {
 
     try {
       const response = await API.put("/profile/", data);
+
+      if (response.status === 200) {
+        setSuccess("Profile updated successfully!");
+      }
       setUser(response.data);
-      setSuccess("Profile updated successfully!");
+
     } catch (error) {
-      setError(`Failed to update profile. Please try again. ${error.response?.data?.message || error.message}`);
+      setError(`Failed to update user data. Refresh page. ${error.response?.data?.message || error.message}`);
     }
   };
 
