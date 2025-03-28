@@ -10,8 +10,7 @@ const RefreshTripButton = ({ tripData, onRefreshComplete }) => {
     const handleRefresh = async () => {
         setLoading(true);
         try {
-            // const response = await axios.post("http://localhost:8000/api/create-route-data/", { trip_id: tripData.id });
-            const response = await API.post("/create-route-data/", { trip_id: tripData.id });
+            const response = await API.get("/create-route-data/", { params: { trip_id: tripData.id }, });
 
 
 
@@ -22,13 +21,17 @@ const RefreshTripButton = ({ tripData, onRefreshComplete }) => {
                     autoClose: 5000,
                 });
 
-                onRefreshComplete();
+                setLoading(false);
+                if (onRefreshComplete) {
+                    onRefreshComplete();
+                }
 
             } else {
                 toast.error("Error Occured, Try again Later!", {
                     position: "top-right",
                     autoClose: 5000,
                 });
+                setLoading(false);
             }
 
         } catch (err) {
@@ -36,10 +39,8 @@ const RefreshTripButton = ({ tripData, onRefreshComplete }) => {
                 position: "top-right",
                 autoClose: 5000,
             });
-
-        } finally {
-
             setLoading(false);
+
         }
 
     };

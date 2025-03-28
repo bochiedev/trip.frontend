@@ -17,10 +17,6 @@ const TripForm = ({ onTripCreated }) => {
         }
 
         try {
-            // const response = await axios.get("http://localhost:8000/api/locations/", {
-            //     params: { q: inputValue },
-            // });
-
             const response = await API.get("/locations/", {
                 params: { q: inputValue },
             });
@@ -72,7 +68,7 @@ const TripForm = ({ onTripCreated }) => {
                 timeout: 10000,
             });
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 console.log("");
                 toast.success("Trip created successfully!", {
                     position: "top-right",

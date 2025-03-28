@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import TripForm from "../components/TripForm";
 import MapComponent from "../components/MapComponent";
 import { MapContainer } from "react-leaflet";
@@ -11,29 +11,32 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchCurrentTrip = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const response = await API.get("/trip-history/");
-                const trips = response.data;
-                if (trips.length > 0) {
-                    setCurrentTrip(trips[0]);
-                }
-            } catch (err) {
-                setError(`Failed to fetch the current trip. Please try again later. ${err.response?.data?.message || err.message}`);
 
-            } finally {
-                setLoading(false);
+    const fetchCurrentTrip = useCallback(async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await API.get("/trip-history/");
+            const trips = response.data;
+            if (trips.length > 0) {
+                setCurrentTrip(trips[0]);
             }
-        };
+        } catch (err) {
+            setError(`Failed to fetch the current trip. Please try again later. ${err.response?.data?.message || err.message}`);
 
-        fetchCurrentTrip();
+        } finally {
+            setLoading(false);
+        }
+
     }, []);
 
-    const handleTripSubmit = (tripData) => {
-        setCurrentTrip(tripData);
+
+    useEffect(() => {
+        fetchCurrentTrip();
+    }, [fetchCurrentTrip]);
+
+    const handleTripSubmit = () => {
+        fetchCurrentTrip();
         setError(null);
     };
 
@@ -49,7 +52,7 @@ const Dashboard = () => {
 
                     <div className="flex items-center justify-between w-full mb-4">
                         <h2 className="text-xl font-semibold text-primary">Current Trip Map </h2>
-                        <RefreshTripButton tripData={currentTrip} onRefreshComplete={setCurrentTrip} />
+                        {currentTrip ? <RefreshTripButton tripData={currentTrip} onRefreshComplete={fetchCurrentTrip} /> : <></>}
                     </div>
 
 

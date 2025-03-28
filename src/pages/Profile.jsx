@@ -35,11 +35,11 @@ const Profile = () => {
 
       if (response.status === 200) {
         setSuccess("Profile updated successfully!");
+        setUser(response.data);
       }
-      setUser(response.data);
 
     } catch (error) {
-      setError(`Failed to update user data. Refresh page. ${error.response?.data?.message || error.message}`);
+      console.log(`Failed to update user data. Refresh page. ${error.response?.data?.message || error.message}`);
     }
   };
 
