@@ -10,7 +10,7 @@ const RefreshTripButton = ({ tripData, onRefreshComplete }) => {
     const handleRefresh = async () => {
         setLoading(true);
         try {
-            const response = await API.get("/create-route-data/", { params: { trip_id: tripData.id }, });
+            const response = await API.get("/create-route-data/", { params: { trip_id: tripData.id, update: false }, });
 
 
 
